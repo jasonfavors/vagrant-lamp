@@ -69,4 +69,5 @@ Vagrant.configure("2") do |config|
   #   apt-get install -y apache2
   # SHELL
   config.vm.provision :shell, :path => ".provision/bootstrap.sh"
+  config.vm.provision :file, source: "~/.gitconfig", destination: "~/.gitconfig"
 end
