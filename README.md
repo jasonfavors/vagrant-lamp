@@ -39,6 +39,10 @@ SSL is enabled by default.  The bootstrap script follows recommendations from [C
 
 Use HTTPS with the initial sites for secure traffic.
 
+### Additional Tools
+1. phpMyAdmin
+1. WP-CLI
+
 ## Notes
 
 ### Apache PHP Info
