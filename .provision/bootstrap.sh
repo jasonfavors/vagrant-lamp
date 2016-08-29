@@ -1,9 +1,7 @@
 #!/bin/bash
 
-# Configurations
-web_user=vagrant
-. /vagrant/.provision/secrets/secrets.cfg # DB_PASSWORD
-remote_ip_address=192.168.33.1
+# Source Configurations
+. /vagrant/.provision/secrets/secrets.cfg
 
 # System update
 echo "Updating server.  This can take a while..."
