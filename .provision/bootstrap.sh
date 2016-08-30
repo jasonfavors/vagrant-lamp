@@ -14,6 +14,7 @@ chkconfig httpd on
 
 groupadd www
 usermod -a -G www $web_user
+usermod -a -G www apache
 chown -R root:www /var/www
 chmod 2755 /var/www
 find /var/www -type d -exec chmod 2755 {} \;

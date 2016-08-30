@@ -55,6 +55,17 @@ sudo -u $web_user -i -- /usr/local/bin/wp core install --path=/var/www/example.c
 sudo -u $web_user -i -- /usr/local/bin/wp post delete 1 --path=/var/www/example.com/html
 sudo -u $web_user -i -- /usr/local/bin/wp plugin delete hello --path=/var/www/example.com/html
 sudo -u $web_user -i -- /usr/local/bin/wp rewrite structure "/%year%/%monthnum%/%day%/%postname%/" --path=/var/www/example.com/html
+cat <<REWRITE > /var/www/example.com/html/.htaccess
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+REWRITE
+
 sudo -u $web_user -i -- /usr/local/bin/wp rewrite flush --path=/var/www/example.com/html
 
 service httpd restart
