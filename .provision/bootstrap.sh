@@ -45,6 +45,7 @@ yum -y install php php-mysql
 
 echo "<?php phpinfo(); ?>" > /var/www/html/phpinfo.php
 service httpd restart
+service network restart
 
 echo "Setting up admin tools"
 # Enable Extra Packages for Enterprise Linux (EPEL)
