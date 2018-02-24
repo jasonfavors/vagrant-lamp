@@ -3,49 +3,19 @@
 # Source Configurations
 . /vagrant/.provision/secrets/secrets.cfg
 
-# System update
-echo "Updating server.  This can take a while..."
-yum -y update
 
-echo "Setting up web server"
-yum -y install httpd
-service httpd start
-chkconfig httpd on
+# yum -y install rh-ruby24
+# yum -y install wget
+/vagrant/.provision/scripts/yum.sh
+/vagrant/.provision/scripts/apache.sh
+/vagrant/.provision/scripts/php.sh
+/vagrant/.provision/scripts/mysql.sh
 
-groupadd www
-usermod -a -G www $web_user
-usermod -a -G www apache
-chown -R root:www /var/www
-chmod 2755 /var/www
-find /var/www -type d -exec chmod 2755 {} \;
-find /var/www -type f -exec chmod 0644 {} \;
+echo "Starting web server"
 
-echo "Securing web server"
-yum -y install mod_ssl
-sed -i -e 's/SSLProtocol all -SSLv2$/SSLProtocol -SSLv2 -SSLv3 \+TLSv1 \+TLSv1.1 \+TLSv1.2/g' /etc/httpd/conf.d/ssl.conf
-sed -i -e 's/SSLCipherSuite HIGH:MEDIUM:!aNULL:!MD5:!SEED:!IDEA$/SSLCipherSuite ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA/g' /etc/httpd/conf.d/ssl.conf
-sed -i -e 's/#SSLHonorCipherOrder on $/SSLHonorCipherOrder on/g' /etc/httpd/conf.d/ssl.conf
-sed -i -e 's/#ServerName www.example.com:443$/ServerName 192.168.33.10:443/g' /etc/httpd/conf.d/ssl.conf
+systemctl start httpd24-httpd.service
+systemctl enable httpd24-httpd.service
 
-echo "Setting up database server"
-yum -y install mariadb-server
-service mariadb start
-chkconfig mariadb on
-
-echo "Securing database server"
-mysqladmin -u root password "$DB_PASSWORD"
-mysql -u root -p"$DB_PASSWORD" -e "UPDATE mysql.user SET Password=PASSWORD('$DB_PASSWORD') WHERE User='root'"
-mysql -u root -p"$DB_PASSWORD" -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')"
-mysql -u root -p"$DB_PASSWORD" -e "DELETE FROM mysql.user WHERE User=''"
-mysql -u root -p"$DB_PASSWORD" -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%'"
-mysql -u root -p"$DB_PASSWORD" -e "FLUSH PRIVILEGES"
-
-echo "Setting up PHP"
-yum -y install php php-mysql
-
-echo "<?php phpinfo(); ?>" > /var/www/html/phpinfo.php
-service httpd restart
-service network restart
 
 echo "Setting up admin tools"
 # Enable Extra Packages for Enterprise Linux (EPEL)

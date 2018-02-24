@@ -24,6 +24,7 @@ Provisions a base Linux VM to run an Apache web server and MySQL database server
 
   ```shell
   $ vagrant up
+  $ vagrant ssh
   ```
 
 ## Features
