@@ -3,6 +3,9 @@
 # Source Configurations
 . /vagrant/.provision/secrets/secrets.cfg
 
+echo "Setting up projects"
+cp /vagrant/.provision/apache/000-default.conf /etc/httpd/conf.d/
+
 # Example.com
 mkdir -p /var/www/example.com
 mkdir -p /etc/httpd/logs/example.com
