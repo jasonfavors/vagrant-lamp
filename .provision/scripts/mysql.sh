@@ -5,7 +5,6 @@
 
 echo "Installing MySQL Server"
 
-yum -y install centos-release-scl
 yum -y install rh-mysql57-mysql
 
 echo "Starting database server"

@@ -8,8 +8,10 @@
 # yum -y install wget
 /vagrant/.provision/scripts/yum.sh
 /vagrant/.provision/scripts/apache.sh
-/vagrant/.provision/scripts/php.sh
-/vagrant/.provision/scripts/mysql.sh
+/vagrant/.provision/scripts/rails.sh
+# /vagrant/.provision/scripts/php.sh
+# /vagrant/.provision/scripts/mysql.sh
+
 
 echo "Starting web server"
 

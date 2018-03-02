@@ -5,8 +5,9 @@
 
 echo "Installing Apache HTTP Server"
 
-yum -y install centos-release-scl
-yum -y install httpd24
+yum -y install httpd24 httpd24-mod_ssl
+
+rpm -q httpd24 httpd24-mod_ssl
 
 echo "Setting up web server"
 
@@ -25,8 +26,6 @@ find /opt/rh/httpd24/root/var/www -type d -exec chmod -v 2775 {} \;
 find /opt/rh/httpd24/root/var/www -type f -exec chmod -v 0664 {} \;
 
 echo "Securing web server"
-
-yum -y install httpd24-mod_ssl
 
 cp -v /opt/rh/httpd24/root/etc/httpd/conf.d/ssl.conf{,.orig}
 sed -i -e 's/^SSLProtocol all -SSLv2$/SSLProtocol -SSLv2 -SSLv3 \+TLSv1 \+TLSv1.1 \+TLSv1.2/g' /opt/rh/httpd24/root/etc/httpd/conf.d/ssl.conf
