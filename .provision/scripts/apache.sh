@@ -17,6 +17,18 @@ cp -v /opt/rh/httpd24/root/etc/httpd/conf/httpd.conf{,.orig}
 sed -i -e "s/#ServerName www.example.com:80$/ServerName $ip_address:80/g" /opt/rh/httpd24/root/etc/httpd/conf/httpd.conf
 diff /opt/rh/httpd24/root/etc/httpd/conf/httpd.conf{.orig,}
 
+echo "#
+# This configuration file loads virtual host from a separate
+# directory, allowing the server to keep all virtual host
+# configurations in one place.
+#
+# Load config files in the \"/etc/httpd/vhost.d\" directory, if any.
+IncludeOptional vhost.d/*.conf
+" > /opt/rh/httpd24/root/etc/httpd/conf.d/vhost.conf
+mdkir -vp /opt/rh/httpd24/root/etc/httpd/vhost.d/
+
+cp -v /vagrant/.provision/apache/000-default.conf /opt/rh/httpd24/root/etc/httpd/vhost.d/
+
 groupadd www
 usermod -a -G www vagrant
 usermod -a -G www apache
